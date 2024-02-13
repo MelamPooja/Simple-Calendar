@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+    }
+    .calendar {
+        width: 300px;
+        margin: 50px auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .header {
+        background-color: #007bff;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .header button {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        font-size: inherit;
+        outline: none;
+    }
+    .month-year {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        padding: 10px;
+    }
+    .day {
+        text-align: center;
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
+</style>
+</head>
+<body>
+
+<div class="calendar">
+    <div class="header">
+        <button onclick="prevMonth()">&lt;</button>
+        <span class="month-year" id="monthYear"></span>
+        <button onclick="nextMonth()">&gt;</button>
+    </div>
+    <div class="days" id="days"></div>
+</div>
+
+<script>
+    // Get today's date
+    const currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    // Function to display the current month
+    function displayMonth() {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        document.getElementById("monthYear").innerHTML = monthNames[currentMonth] + " " + currentYear;
+
+        const daysElement = document.getElementById("days");
+        daysElement.innerHTML = '';
+
+        // Get the first day of the month
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+        const startingDay = firstDayOfMonth.getDay();
+
+        // Get the number of days in the month
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Fill in empty cells before the start of the month
+        for (let i = 0; i < startingDay; i++) {
+            const dayElement = document.createElement("div");
+            dayElement.className = "day";
+            daysElement.appendChild(dayElement);
+        }
+
+        // Fill in the days of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement("div");
+            dayElement.className = "day";
+            dayElement.textContent = day;
+            daysElement.appendChild(dayElement);
+        }
+    }
+
+    // Function to display the previous month
+    function prevMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        displayMonth();
+    }
+
+    // Function to display the next month
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        displayMonth();
+    }
+
+    // Initial display
+    displayMonth();
+</script>
+
+</body>
+</html>
